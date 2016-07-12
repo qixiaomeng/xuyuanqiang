@@ -1,0 +1,155 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>许愿墙--半成品哈哈哈</title>
+<link rel="stylesheet" href="./Css2/index.css" />
+<script src="../ajax5.js"></script>
+<script>
+window.onload=function(){
+	var oAdd=document.getElementById('send');
+	var oLightBox=document.getElementById('send-form');
+	var oSend=document.getElementById('send-btn');
+	var oClose=document.getElementById('close');
+	var oUser=document.getElementById('username');
+	var oContent=document.getElementById('content');
+	var oMain=document.getElementById('main');
+	var zIndex=2;
+	
+	oAdd.onclick=function(){
+		oLightBox.style.display='block';
+	};	
+	oClose.onclick=function(){
+		oLightBox.style.display='none';	
+	};	
+	//1.发表许愿
+	oSend.onclick=function() {
+		oLightBox.style.display = 'none';
+
+
+		var oDl = document.createElement('dl');
+		oDl.className = 'paper a' + rnd(1, 6);
+		oDl.innerHTML =
+				'<dt>\
+            <span class="username">' + oUser.value + '</span>\
+            <span class="num">' + 2 + '</span>\
+        </dt>\
+        <dd class="content">' + oContent.value + '</dd>\
+        <dd class="bottom">\
+            <span class="time">' + 2 + '</span>\
+            <a href="javascript:;" class="close"></a>\
+        </dd>';
+		oMain.appendChild(oDl);
+		setPos(oDl);
+		drag(oDl);
+	}
+	function drag(oParent){
+		var obj = oParent.children[0];
+		obj.onmousedown=function(ev){
+			oParent.style.zIndex=zIndex++;
+			oParent.style.opacity=0.5;
+			var e=ev||event	
+			var disX=e.clientX-oParent.offsetLeft;
+			var disY=e.clientY-oParent.offsetTop;
+			document.onmousemove=function(ev){
+				var e=ev||event;
+				var l=e.clientX-disX;
+				var t=e.clientY-disY;
+				
+				if(l<0)l=0;
+				if(l>oMain.offsetWidth-oParent.offsetWidth)
+					l=oMain.offsetWidth-oParent.offsetWidth;
+				if(t<0) t=0;
+				if(t>document.documentElement.clientHeight-oParent.offsetHeight-126)
+					t=document.documentElement.clientHeight-oParent.offsetHeight-126;
+					
+				oParent.style.left=l+'px';	
+				oParent.style.top=t+'px';	
+			};
+			document.onmouseup=function(){
+				oParent.style.opacity=1;
+				document.onmousemove=document.onmouseup=null;	
+			};
+			return false;
+		};
+	}
+	function setPos(obj){
+		var l=rnd(0,document.documentElement.clientWidth-obj.offsetWidth);
+		var t=rnd(0,document.documentElement.clientHeight-obj.offsetHeight-126);
+		
+		obj.style.left=l+'px';
+		obj.style.top=t+'px';	
+	}
+	function rnd(n,m){
+		return parseInt(n+Math.random()*(m-n));	
+	}
+	function check(id){
+		//No.00001	
+		if(id<10){
+			return 'No.0000'+id;	
+		}else if(id>=10 && id<100){
+			return 'No.000'+id;		
+		}else if(id>=100 && id<1000){
+			return 'No.00'+id;		
+		}else if(id>=1000 && id<10000){
+			return 'No.0'+id;		
+		}else if(id>=10000 && id<100000){
+			return 'No.'+id;		
+		}
+	}
+};
+</script>
+</head>
+<body>
+<div id="top">
+    <span id="send"></span>
+</div>
+<div id="main">
+    <!--<dl class="paper a1">
+        <dt>
+            <span class="username">啊呀</span>
+            <span class="num">No.00001</span>
+        </dt>
+        <dd class="content">你好</dd>
+        <dd class="bottom">
+            <span class="time">今天08:30</span>
+            <a href="javascript:;" class="close"></a>
+        </dd>
+    </dl>-->
+</div>
+
+<div id="send-form">
+    <p class="title"><span>许下你的愿望</span><a href="javascript:;" id="close"></a></p>
+    <form action="" name="wish">
+        <p>
+            <label for="username">昵称：</label>
+            <input type="text" name="username" id="username"/>
+        </p>
+        <p>
+            <label for="content">愿望：(您还可以输入&nbsp;<span id="font-num">50</span>&nbsp;个字)</label>
+            <textarea name="content" id="content"></textarea>
+            <div id="phiz">
+                <img src="./Images2/phiz/zhuakuang.gif" alt="抓狂" />
+                <img src="./Images2/phiz/baobao.gif" alt="抱抱" />
+                <img src="./Images2/phiz/haixiu.gif" alt="害羞" />
+                <img src="./Images2/phiz/ku.gif" alt="酷" />
+                <img src="./Images2/phiz/xixi.gif" alt="嘻嘻" />
+                <img src="./Images2/phiz/taikaixin.gif" alt="太开心" />
+                <img src="./Images2/phiz/touxiao.gif" alt="偷笑" />
+                <img src="./Images2/phiz/qian.gif" alt="钱" />
+                <img src="./Images2/phiz/huaxin.gif" alt="花心" />
+                <img src="./Images2/phiz/jiyan.gif" alt="挤眼" />
+            </div>
+        </p>
+        <span id="send-btn"></span>
+    </form>
+</div>
+<!--[if IE 6]>
+<script type="text/javascript" src="./Js/iepng.js"></script>
+<script type="text/javascript">
+    DD_belatedPNG.fix("#send,#close,.close","background");
+</script>
+<![endif]-->
+</body>
+</html>
